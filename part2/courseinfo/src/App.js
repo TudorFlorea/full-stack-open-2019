@@ -13,12 +13,21 @@ const Part = ({ part }) => {
   );
 };
 
+const Total = ({ parts }) => {
+  const total = parts.reduce((acc = 0, part) => {
+    return acc + part.exercises;
+  }, 0);
+  console.log(total);
+  return <p>total of {total} exercises</p>;
+};
+
 const Course = ({ course }) => {
   const { name, parts } = course;
   return (
     <>
       <Header name={name} />
       {parts && parts.map(part => <Part key={part.id} part={part} />)}
+      <Total parts={parts} />
     </>
   );
 };
