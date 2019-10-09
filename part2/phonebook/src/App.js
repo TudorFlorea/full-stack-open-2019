@@ -45,7 +45,7 @@ const App = () => {
   };
 
   const personsToShow = filterName
-    ? persons.filter(person => person.name.search(filterName) != -1)
+    ? persons.filter(person => person.name.search(filterName) !== -1)
     : persons;
 
   return (
