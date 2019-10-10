@@ -30,9 +30,6 @@ const App = () => {
     setCountriesFilter(filter);
   };
 
-  console.log(countries);
-  console.log(filteredCountries);
-  console.log(countriesFilter);
   return (
     <div className="App">
       <CountriesFilter

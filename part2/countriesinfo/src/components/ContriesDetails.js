@@ -37,7 +37,7 @@ const CountriesDetails = ({ countries, changeFilter }) => {
               return <li key={lang.name}>{lang.name}</li>;
             })}
           </ul>
-          <img src={countries[0].flag} width="150px" />
+          <img src={countries[0].flag} width="150px" alt="flag" />
         </div>
       );
     }
