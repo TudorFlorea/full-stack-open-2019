@@ -10,7 +10,9 @@ const App = () => {
 
   const filteredCountries = countriesFilter
     ? countries.filter(
-        country => country.name.toLowerCase().search(countriesFilter) !== -1
+        country =>
+          country.name.toLowerCase().search(countriesFilter.toLowerCase()) !==
+          -1
       )
     : countries;
 

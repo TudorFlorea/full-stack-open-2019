@@ -9,7 +9,18 @@ const CountriesDetails = ({ countries, changeFilter }) => {
       return (
         <div>
           {countries.map(country => {
-            return <p key={country.name}>{country.name}</p>;
+            return (
+              <div key={country.name}>
+                <span>{country.name}</span>
+                <button
+                  onClick={() => {
+                    changeFilter(country.name);
+                  }}
+                >
+                  show
+                </button>
+              </div>
+            );
           })}
         </div>
       );
