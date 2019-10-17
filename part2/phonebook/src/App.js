@@ -13,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterName, setFilterName] = useState("");
   const [notification, setNotification] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     personService.getAll().then(initalPersons => {
@@ -44,14 +45,27 @@ const App = () => {
       );
       if (replace) {
         personToUpdate.number = newNumber;
-        personService.update(personToUpdate).then(data => {
-          setPersons(
-            persons.map(person => {
-              return person.id === data.id ? data : person;
-            })
-          );
-          setNotification(`Updated ${personToUpdate.name}'s number`);
-        });
+        personService
+          .update(personToUpdate)
+          .then(data => {
+            setPersons(
+              persons.map(person => {
+                return person.id === data.id ? data : person;
+              })
+            );
+            setNotification(`Updated ${personToUpdate.name}'s number`);
+          })
+          .catch(err => {
+            console.log("ERR", err);
+            setPersons(
+              persons.filter(person => {
+                return person.id !== personToUpdate.id;
+              })
+            );
+            setErrorMessage(
+              `Information of ${personToUpdate.name}  has already been removed from the server`
+            );
+          });
       }
     } else {
       const newPerson = {
@@ -71,7 +85,8 @@ const App = () => {
     setNewNumber("");
     setTimeout(() => {
       setNotification("");
-    }, 2000);
+      setErrorMessage("");
+    }, 5000);
   };
 
   const personsToShow = filterName
@@ -82,6 +97,9 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
+      {errorMessage ? (
+        <Notification message={errorMessage} isError={true} />
+      ) : null}
       {notification ? <Notification message={notification} /> : null}
 
       <Filter value={filterName} onChange={handleFilterNameChange} />
