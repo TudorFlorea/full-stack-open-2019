@@ -1,5 +1,7 @@
 import React from "react";
 
+import CityWeather from "./CityWeather";
+
 const CountriesDetails = ({ countries, changeFilter }) => {
   switch (true) {
     case countries.length > 10: {
@@ -38,6 +40,7 @@ const CountriesDetails = ({ countries, changeFilter }) => {
             })}
           </ul>
           <img src={countries[0].flag} width="150px" alt="flag" />
+          <CityWeather city={countries[0].capital} />
         </div>
       );
     }

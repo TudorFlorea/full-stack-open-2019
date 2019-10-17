@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
+import countriesService from "./services/contries";
 import CountriesFilter from "./components/CountriesFilter";
 import CountriesDetails from "./components/ContriesDetails";
 
@@ -17,8 +17,8 @@ const App = () => {
     : countries;
 
   useEffect(() => {
-    axios.get("https://restcountries.eu/rest/v2/all").then(response => {
-      setCountries(response.data);
+    countriesService.getAllCountries().then(data => {
+      setCountries(data);
     });
   }, []);
 
