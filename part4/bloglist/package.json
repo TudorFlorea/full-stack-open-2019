@@ -8,7 +8,7 @@
     "watch": "nodemon index.js"
   },
   "jest": {
-    "testEnvironament": "node"
+    "testEnvironment": "node"
   },
   "author": "Tudor Florea",
   "license": "MIT",
