@@ -56,7 +56,6 @@ const App = () => {
             setNotification(`Updated ${personToUpdate.name}'s number`);
           })
           .catch(err => {
-            console.log("ERR", err);
             setPersons(
               persons.filter(person => {
                 return person.id !== personToUpdate.id;
@@ -70,15 +69,18 @@ const App = () => {
     } else {
       const newPerson = {
         name: newName.trim(),
-        number: newNumber.trim(),
-        id: persons.length + 1
+        number: newNumber.trim()
       };
 
-      personService.create(newPerson).then(createdPerson => {
-        setPersons([...persons, createdPerson]);
-      });
-
-      setNotification(`Added ${newName}`);
+      personService
+        .create(newPerson)
+        .then(createdPerson => {
+          setPersons([...persons, createdPerson]);
+          setNotification(`Added ${newName}`);
+        })
+        .catch(err => {
+          setErrorMessage(err.response.data.error);
+        });
     }
 
     setNewName("");
