@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
     "start": "node index.js",
     "watch": "nodemon index.js"
+  },
+  "jest": {
+    "testEnvironament": "node"
   },
   "author": "Tudor Florea",
   "license": "MIT",
@@ -17,6 +20,7 @@
     "mongoose": "^5.7.5"
   },
   "devDependencies": {
+    "jest": "^24.9.0",
     "nodemon": "^1.19.4"
   }
 }
