@@ -212,4 +212,151 @@ describe("most blogs", () => {
       blogs: 2
     });
   });
+
+  test("on a list with many top authors it shows one of them", () => {
+    const listWithMultipleBlogs = [
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test1",
+        url: "url",
+        likes: 12,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test1",
+        url: "url",
+        likes: 12,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test2",
+        url: "url",
+        likes: 12,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test2",
+        url: "url",
+        likes: 12,
+        __v: 0
+      }
+    ];
+
+    const result = listHelper.mostBlogs(listWithMultipleBlogs);
+
+    expect(result).toEqual({
+      author: "Test1",
+      blogs: 2
+    });
+  });
+});
+
+describe("most likes", () => {
+  test("returns null on an empty blog list", () => {
+    const emptyBlogList = [];
+
+    const result = listHelper.mostBlogs(emptyBlogList);
+
+    expect(result).toBe(null);
+  });
+
+  test("returns the author and the number of likes if there is only one blog in the list", () => {
+    const listWithOneBlog = [
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Edsger W. Dijkstra",
+        url:
+          "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+        likes: 5,
+        __v: 0
+      }
+    ];
+
+    const result = listHelper.mostLikes(listWithOneBlog);
+
+    expect(result).toEqual({
+      author: "Edsger W. Dijkstra",
+      likes: 5
+    });
+  });
+
+  test("on a list with multiple blogs it returns the correct author with the number of likes", () => {
+    const listWithMultipleBlogs = [
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test1",
+        url: "url",
+        likes: 5,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test2",
+        url: "url",
+        likes: 12,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test1",
+        url: "url",
+        likes: 5,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test3",
+        url: "url",
+        likes: 5,
+        __v: 0
+      }
+    ];
+
+    const result = listHelper.mostLikes(listWithMultipleBlogs);
+
+    expect(result).toEqual({
+      author: "Test2",
+      likes: 12
+    });
+  });
+
+  test("on a list with many top authors it shows one of them", () => {
+    const listWithMultipleBlogs = [
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test1",
+        url: "url",
+        likes: 12,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test2",
+        url: "url",
+        likes: 12,
+        __v: 0
+      }
+    ];
+
+    const result = listHelper.mostLikes(listWithMultipleBlogs);
+
+    expect(result).toEqual({
+      author: "Test1",
+      likes: 12
+    });
+  });
 });
