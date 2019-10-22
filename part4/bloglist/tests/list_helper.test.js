@@ -69,7 +69,7 @@ describe("total likes", () => {
 });
 
 describe("favorite blog", () => {
-  test("returns null if there are on an empty blog list", () => {
+  test("returns null on an empty blog list", () => {
     const emptyListOfBlogs = [];
 
     const result = listHelper.favoriteBlog(emptyListOfBlogs);
@@ -135,6 +135,81 @@ describe("favorite blog", () => {
       title: listWithMultipleBlogs[1].title,
       author: listWithMultipleBlogs[1].author,
       likes: listWithMultipleBlogs[1].likes
+    });
+  });
+});
+
+describe("most blogs", () => {
+  test("returns null on an empty blog list", () => {
+    const emptyBlogList = [];
+
+    const result = listHelper.mostBlogs(emptyBlogList);
+
+    expect(result).toBe(null);
+  });
+
+  test("returns the author and 1 if there is only one blog in the list", () => {
+    const listWithOneBlog = [
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Edsger W. Dijkstra",
+        url:
+          "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+        likes: 5,
+        __v: 0
+      }
+    ];
+
+    const result = listHelper.mostBlogs(listWithOneBlog);
+
+    expect(result).toEqual({
+      author: "Edsger W. Dijkstra",
+      blogs: 1
+    });
+  });
+
+  test("on a list with multiple blogs it returns the correct author with the number of blogs", () => {
+    const listWithMultipleBlogs = [
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test1",
+        url: "url",
+        likes: 5,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test2",
+        url: "url",
+        likes: 5,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test1",
+        url: "url",
+        likes: 5,
+        __v: 0
+      },
+      {
+        _id: "5a422aa71b54a676234d17f8",
+        title: "Go To Statement Considered Harmful",
+        author: "Test3",
+        url: "url",
+        likes: 5,
+        __v: 0
+      }
+    ];
+
+    const result = listHelper.mostBlogs(listWithMultipleBlogs);
+
+    expect(result).toEqual({
+      author: "Test1",
+      blogs: 2
     });
   });
 });
