@@ -41,6 +41,24 @@ test("blogs have an id property", async () => {
   expect(blogs.body[0].id).toBeDefined();
 });
 
+test("blog is saved correctly in the database", async () => {
+  const newBlog = {
+    title: "Title 3",
+    author: "Author 3",
+    url: "https://site.com"
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201);
+
+  const response = await api.get("/api/blogs");
+
+  expect(response.body.length).toBe(initialBlogs.length + 1);
+  expect(response.body).toContainEqual(expect.objectContaining(newBlog));
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
