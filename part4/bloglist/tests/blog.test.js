@@ -59,6 +59,18 @@ test("blog is saved correctly in the database", async () => {
   expect(response.body).toContainEqual(expect.objectContaining(newBlog));
 });
 
+test("on a saved blog if no likes are present they default to 0", async () => {
+  const newBlog = {
+    title: "Title 3",
+    author: "Author 3",
+    url: "https://site.com"
+  };
+
+  const savedBlog = await api.post("/api/blogs").send(newBlog);
+
+  expect(savedBlog.body).toHaveProperty("likes", 0);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
