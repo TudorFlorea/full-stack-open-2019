@@ -9,12 +9,14 @@ const initialBlogs = [
   {
     title: "Title 1",
     author: "Author 1",
-    url: "https://google.com"
+    url: "https://google.com",
+    likes: 20
   },
   {
     title: "Title 2",
     author: "Author 2",
-    url: "https://facebook.com"
+    url: "https://facebook.com",
+    likes: 10
   }
 ];
 
@@ -69,6 +71,17 @@ test("on a saved blog if no likes are present they default to 0", async () => {
   const savedBlog = await api.post("/api/blogs").send(newBlog);
 
   expect(savedBlog.body).toHaveProperty("likes", 0);
+});
+
+test("get a 400 response when the title or url is missing from the request", async () => {
+  const blogWithoutTitleAndUrl = {
+    author: "Author 3"
+  };
+
+  api
+    .post("/apu/blogs")
+    .send(blogWithoutTitleAndUrl)
+    .expect(400);
 });
 
 afterAll(() => {
