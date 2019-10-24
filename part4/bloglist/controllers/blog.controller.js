@@ -17,4 +17,42 @@ blogRouter.post("/", async (request, response) => {
   }
 });
 
+blogRouter.delete("/:id", async (request, response) => {
+  const id = request.params.id;
+  try {
+    const deletedBlog = await Blog.findByIdAndDelete(id);
+    if (deletedBlog) {
+      response.json(deletedBlog.toJSON());
+    } else {
+      response.status(400).json({
+        error: `No blog with the following id: ${id}`
+      });
+    }
+  } catch (err) {
+    response.status(400).json({
+      error: err.message
+    });
+  }
+});
+
+blogRouter.put("/:id", async (request, response) => {
+  const id = request.params.id;
+  const blog = request.body;
+
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true });
+    if (updatedBlog) {
+      response.json(updatedBlog.toJSON());
+    } else {
+      response.status(400).json({
+        error: `No blog with the following id: ${id}`
+      });
+    }
+  } catch (err) {
+    response.status(400).json({
+      error: err.message
+    });
+  }
+});
+
 module.exports = blogRouter;
