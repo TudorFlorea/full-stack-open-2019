@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 
 const blogRouter = require("./controllers/blog.controller");
 const userRouter = require("./controllers/user.controller");
+const authRouter = require("./controllers/auth.controller");
+const tokenMiddelware = require("./utils/tokenMiddelware");
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
@@ -15,8 +17,10 @@ mongoose.connect(config.MONGODB_URI, {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(tokenMiddelware);
 
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
+app.use("/auth", authRouter);
 
 module.exports = app;
