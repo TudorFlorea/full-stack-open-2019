@@ -21,6 +21,6 @@ app.use(tokenMiddelware);
 
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 module.exports = app;
