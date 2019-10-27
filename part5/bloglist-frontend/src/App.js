@@ -5,6 +5,7 @@ import BlogsList from "./components/BlogsList";
 import LoginForm from "./components/LoginForm";
 import Heading from "./components/Heading";
 import UserDetails from "./components/UserDetails";
+import AddBlogForm from "./components/AddBlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -29,6 +30,15 @@ const App = () => {
   const handleLogOut = () => {
     setUser(null);
     window.localStorage.removeItem("loggedBlogUser");
+  };
+
+  const handleBlogAdded = async newBlog => {
+    try {
+      const blog = await blogService.addBlog(newBlog);
+      console.log(blog);
+    } catch (err) {
+      console.log(err.response);
+    }
   };
 
   useEffect(() => {
@@ -62,7 +72,8 @@ const App = () => {
       )}
       {user ? (
         <>
-          <UserDetails user={user} onLogOut={handleLogOut} />{" "}
+          <UserDetails user={user} onLogOut={handleLogOut} />
+          <AddBlogForm onBlogAdded={handleBlogAdded} />
           <BlogsList blogs={blogs} />
         </>
       ) : (
