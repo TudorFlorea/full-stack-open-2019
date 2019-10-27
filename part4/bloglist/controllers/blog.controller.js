@@ -19,7 +19,9 @@ blogRouter.post("/", async (request, response) => {
   const body = request.body;
 
   if (!body.title || !body.url) {
-    response.status(400).end();
+    response.status(400).json({
+      error: "missing title or url"
+    });
   } else {
     try {
       const decodedToken = jwt.verify(request.token, process.env.SECRET);
@@ -32,6 +34,7 @@ blogRouter.post("/", async (request, response) => {
         title: body.title,
         url: body.url,
         likes: body.likes,
+        author: body.author,
         user: user._id
       });
 
