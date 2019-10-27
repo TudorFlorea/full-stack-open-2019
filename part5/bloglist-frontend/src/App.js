@@ -10,17 +10,25 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
 
-  const handleSubmit = async credentials => {
+  const handleLogInSubmit = async credentials => {
     try {
       const user = await authService.login(credentials);
+
+      window.localStorage.setItem("loggedBlogUser", JSON.stringify(user));
       console.log(user);
       console.log("here");
+      blogService.setToken(user.token);
       setUser(user);
     } catch (err) {
       console.log(err, err.message);
       console.log("not");
       console.log(err.response);
     }
+  };
+
+  const handleLogOut = () => {
+    setUser(null);
+    window.localStorage.removeItem("loggedBlogUser");
   };
 
   useEffect(() => {
@@ -36,6 +44,15 @@ const App = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    const localUser = window.localStorage.getItem("loggedBlogUser");
+    if (localUser) {
+      const user = JSON.parse(localUser);
+      setUser(user);
+      blogService.setToken(user.token);
+    }
+  }, []);
+
   return (
     <div className="App">
       {user ? (
@@ -45,10 +62,11 @@ const App = () => {
       )}
       {user ? (
         <>
-          <UserDetails user={user} /> <BlogsList blogs={blogs} />
+          <UserDetails user={user} onLogOut={handleLogOut} />{" "}
+          <BlogsList blogs={blogs} />
         </>
       ) : (
-        <LoginForm onSubmit={handleSubmit} />
+        <LoginForm onSubmit={handleLogInSubmit} />
       )}
     </div>
   );

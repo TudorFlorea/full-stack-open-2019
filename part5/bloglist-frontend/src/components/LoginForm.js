@@ -26,7 +26,7 @@ const LoginForm = ({ onSubmit }) => {
       <input type="text" value={username} onChange={handleUserNameChange} />
       <br />
       <label htmlFor="username">password</label>
-      <input type="text" value={password} onChange={handlePasswordChange} />
+      <input type="password" value={password} onChange={handlePasswordChange} />
       <br />
       <button type="submit">login</button>
     </form>
