@@ -5,6 +5,10 @@ const AddBlogForm = ({ onBlogAdded }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const [showForm, setShowForm] = useState(false);
+
+  const hideWhenFormIsVisible = { display: showForm ? "none" : "" };
+  const showWhenFormIsVisible = { display: showForm ? "" : "none" };
 
   const handleNewBlogSubmit = e => {
     e.preventDefault();
@@ -13,12 +17,25 @@ const AddBlogForm = ({ onBlogAdded }) => {
       author,
       url
     });
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+  };
+
+  const handleCalncelNewNote = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowForm(false);
   };
 
   return (
     <>
-      <Heading text="create new" />
-      <form onSubmit={handleNewBlogSubmit}>
+      <button style={hideWhenFormIsVisible} onClick={() => setShowForm(true)}>
+        new note
+      </button>
+
+      <form onSubmit={handleNewBlogSubmit} style={showWhenFormIsVisible}>
+        <Heading text="create new" />
         <label htmlFor="title">title</label>
         <input
           id="title"
@@ -44,6 +61,8 @@ const AddBlogForm = ({ onBlogAdded }) => {
         />
         <br />
         <button type="submit">create</button>
+        <br />
+        <button onClick={handleCalncelNewNote}>cancel</button>
       </form>
     </>
   );
