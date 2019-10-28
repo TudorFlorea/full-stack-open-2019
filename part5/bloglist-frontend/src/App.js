@@ -94,7 +94,7 @@ const App = () => {
           {successMessage && <Message text={successMessage} />}
           <UserDetails user={user} onLogOut={handleLogOut} />
           <AddBlogForm onBlogAdded={handleBlogAdded} />
-          <BlogsList blogs={blogs} />
+          <BlogsList blogs={blogs} user={user} />
         </>
       ) : (
         <>
