@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, onLikeClick }) => {
   const [showInfo, setShowInfo] = useState(false);
 
   const blogStyle = {
@@ -8,6 +8,20 @@ const Blog = ({ blog, user }) => {
     border: "solid",
     borderWidth: 1,
     marginBottom: 5
+  };
+
+  const handleLikeClick = e => {
+    e.stopPropagation();
+    console.log({
+      ...blog,
+      user: blog.user.id,
+      likes: blog.likes++
+    });
+    onLikeClick({
+      ...blog,
+      user: blog.user.id,
+      likes: blog.likes++
+    });
   };
 
   return (
@@ -22,9 +36,9 @@ const Blog = ({ blog, user }) => {
             {blog.url}
           </p>
           <p>
-            {blog.likes} likes <button>like</button>
+            {blog.likes} likes <button onClick={handleLikeClick}>like</button>
           </p>
-          <p>added by {user.name}</p>
+          <p>added by {blog.user.name}</p>
         </div>
       ) : null}
     </div>

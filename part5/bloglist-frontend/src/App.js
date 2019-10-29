@@ -59,6 +59,15 @@ const App = () => {
     }
   };
 
+  const handleLikeClick = async newBlog => {
+    console.log(newBlog);
+    const updatedBlog = await blogService.updateBlog(newBlog);
+    const newBlogs = blogs.map(blog => {
+      return blog.id === updatedBlog.id ? updatedBlog : blog;
+    });
+    setBlogs(newBlogs);
+  };
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -94,7 +103,7 @@ const App = () => {
           {successMessage && <Message text={successMessage} />}
           <UserDetails user={user} onLogOut={handleLogOut} />
           <AddBlogForm onBlogAdded={handleBlogAdded} />
-          <BlogsList blogs={blogs} user={user} />
+          <BlogsList blogs={blogs} onLikeClick={handleLikeClick} />
         </>
       ) : (
         <>

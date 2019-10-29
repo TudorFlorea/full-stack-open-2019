@@ -1,11 +1,12 @@
 import React from "react";
 import Blog from "./Blog";
 
-const BlogsList = ({ blogs, user }) => {
+const BlogsList = ({ blogs, onLikeClick }) => {
+  console.log(blogs);
   return (
     <>
       {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} user={user} />
+        <Blog key={blog.id} blog={blog} onLikeClick={onLikeClick} />
       ))}
     </>
   );
