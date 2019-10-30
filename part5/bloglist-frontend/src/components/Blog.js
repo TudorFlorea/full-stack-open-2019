@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const Blog = ({ blog, onLikeClick, onBlogDelete }) => {
+const Blog = ({ blog, user, onLikeClick, onBlogDelete }) => {
   const [showInfo, setShowInfo] = useState(false);
 
   const blogStyle = {
@@ -26,7 +26,6 @@ const Blog = ({ blog, onLikeClick, onBlogDelete }) => {
       onBlogDelete(blog.id);
     }
   };
-
   return (
     <div style={blogStyle} onClick={e => setShowInfo(!showInfo)}>
       <p>
@@ -41,8 +40,10 @@ const Blog = ({ blog, onLikeClick, onBlogDelete }) => {
           <p>
             {blog.likes} likes <button onClick={handleLikeClick}>like</button>
           </p>
-          <p>added by {blog.user.name}</p>
-          <button onClick={handleRemoveClick}>remove</button>
+          <p>added by {blog.user && blog.user.name}</p>
+          {user.username === (blog.user && blog.user.username) ? (
+            <button onClick={handleRemoveClick}>remove</button>
+          ) : null}
         </div>
       ) : null}
     </div>

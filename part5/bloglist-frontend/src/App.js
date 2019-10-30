@@ -20,14 +20,10 @@ const App = () => {
       const user = await authService.login(credentials);
 
       window.localStorage.setItem("loggedBlogUser", JSON.stringify(user));
-      console.log(user);
-      console.log("here");
+
       blogService.setToken(user.token);
       setUser(user);
     } catch (err) {
-      console.log(err, err.message);
-      console.log("not");
-      console.log(err.response);
       setErrorMessage(err.response.data.error);
     }
 
@@ -125,6 +121,7 @@ const App = () => {
             blogs={blogs}
             onLikeClick={handleLikeClick}
             onBlogDelete={handleBlogDelete}
+            user={user}
           />
         </>
       ) : (

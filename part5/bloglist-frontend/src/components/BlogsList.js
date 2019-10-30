@@ -1,7 +1,7 @@
 import React from "react";
 import Blog from "./Blog";
 
-const BlogsList = ({ blogs, onLikeClick, onBlogDelete }) => {
+const BlogsList = ({ blogs, user, onLikeClick, onBlogDelete }) => {
   return (
     <>
       {blogs.map(blog => (
@@ -10,6 +10,7 @@ const BlogsList = ({ blogs, onLikeClick, onBlogDelete }) => {
           blog={blog}
           onLikeClick={onLikeClick}
           onBlogDelete={onBlogDelete}
+          user={user}
         />
       ))}
     </>
