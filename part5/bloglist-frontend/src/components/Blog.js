@@ -12,15 +12,10 @@ const Blog = ({ blog, onLikeClick }) => {
 
   const handleLikeClick = e => {
     e.stopPropagation();
-    console.log({
-      ...blog,
-      user: blog.user.id,
-      likes: blog.likes++
-    });
     onLikeClick({
       ...blog,
       user: blog.user.id,
-      likes: blog.likes++
+      likes: ++blog.likes
     });
   };
 

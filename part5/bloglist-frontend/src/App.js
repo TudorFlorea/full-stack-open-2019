@@ -60,23 +60,29 @@ const App = () => {
   };
 
   const handleLikeClick = async newBlog => {
-    console.log(newBlog);
     const updatedBlog = await blogService.updateBlog(newBlog);
     const newBlogs = blogs.map(blog => {
       return blog.id === updatedBlog.id ? updatedBlog : blog;
     });
-    setBlogs(newBlogs);
+    setBlogs(sortBlogs(newBlogs));
+  };
+
+  const sortBlogs = unsortedBlogs => {
+    return unsortedBlogs.sort((a, b) => {
+      if (a.likes < b.likes) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
   };
 
   useEffect(() => {
     const getData = async () => {
       try {
         const blogsResult = await blogService.getAll();
-        console.log(blogsResult);
-        setBlogs(blogsResult);
-      } catch (err) {
-        console.log(err);
-      }
+        setBlogs(sortBlogs(blogsResult));
+      } catch (err) {}
     };
     getData();
   }, []);
@@ -89,6 +95,10 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
+
+  useEffect(() => {
+    setBlogs(sortBlogs(blogs));
+  }, [blogs]);
 
   return (
     <div className="App">
