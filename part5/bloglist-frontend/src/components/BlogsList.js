@@ -1,5 +1,5 @@
-import React from "react";
-import Blog from "./Blog";
+import React from 'react'
+import Blog from './Blog'
 
 const BlogsList = ({ blogs, user, onLikeClick, onBlogDelete }) => {
   return (
@@ -14,7 +14,7 @@ const BlogsList = ({ blogs, user, onLikeClick, onBlogDelete }) => {
         />
       ))}
     </>
-  );
-};
+  )
+}
 
-export default BlogsList;
+export default BlogsList

@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 const LoginForm = ({ onSubmit }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleUserNameChange = e => {
-    setUsername(e.target.value);
-  };
+    setUsername(e.target.value)
+  }
 
   const handlePasswordChange = e => {
-    setPassword(e.target.value);
-  };
+    setPassword(e.target.value)
+  }
 
   const handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
     onSubmit({
       username,
       password
-    });
-  };
+    })
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -30,7 +30,7 @@ const LoginForm = ({ onSubmit }) => {
       <br />
       <button type="submit">login</button>
     </form>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

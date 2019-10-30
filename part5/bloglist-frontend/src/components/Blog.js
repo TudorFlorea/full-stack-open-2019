@@ -1,35 +1,35 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, user, onLikeClick, onBlogDelete }) => {
-  const [showInfo, setShowInfo] = useState(false);
+  const [showInfo, setShowInfo] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  };
+  }
 
   const handleLikeClick = e => {
-    e.stopPropagation();
+    e.stopPropagation()
     onLikeClick({
       ...blog,
       user: blog.user.id,
       likes: ++blog.likes
-    });
-  };
+    })
+  }
 
   const handleRemoveClick = e => {
-    e.stopPropagation();
-    const shouldDelete = window.confirm(`remove blog ${blog.title}?`);
+    e.stopPropagation()
+    const shouldDelete = window.confirm(`remove blog ${blog.title}?`)
     if (shouldDelete) {
-      onBlogDelete(blog.id);
+      onBlogDelete(blog.id)
     }
-  };
+  }
   return (
-    <div style={blogStyle} onClick={e => setShowInfo(!showInfo)}>
+    <div style={blogStyle} onClick={() => setShowInfo(!showInfo)}>
       <p>
         {blog.title} {blog.author}
       </p>
@@ -49,14 +49,14 @@ const Blog = ({ blog, user, onLikeClick, onBlogDelete }) => {
         </div>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   onLikeClick: PropTypes.func.isRequired,
   onBlogDelete: PropTypes.func.isRequired
-};
+}
 
-export default Blog;
+export default Blog

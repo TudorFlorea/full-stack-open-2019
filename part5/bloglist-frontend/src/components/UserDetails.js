@@ -1,18 +1,18 @@
-import React from "react";
+import React from 'react'
 
 const UserDetails = ({ user, onLogOut }) => {
   return (
     <p>
-      {user.name} logged in{" "}
+      {user.name} logged in{' '}
       <button
         onClick={() => {
-          onLogOut();
+          onLogOut()
         }}
       >
         logout
       </button>
     </p>
-  );
-};
+  )
+}
 
-export default UserDetails;
+export default UserDetails

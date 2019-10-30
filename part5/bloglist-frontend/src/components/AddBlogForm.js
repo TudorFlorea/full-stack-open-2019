@@ -1,32 +1,32 @@
-import React, { useState } from "react";
-import Heading from "./Heading";
+import React, { useState } from 'react'
+import Heading from './Heading'
 
 const AddBlogForm = ({ onBlogAdded }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+  const [showForm, setShowForm] = useState(false)
 
-  const hideWhenFormIsVisible = { display: showForm ? "none" : "" };
-  const showWhenFormIsVisible = { display: showForm ? "" : "none" };
+  const hideWhenFormIsVisible = { display: showForm ? 'none' : '' }
+  const showWhenFormIsVisible = { display: showForm ? '' : 'none' }
 
   const handleNewBlogSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
     onBlogAdded({
       title,
       author,
       url
-    });
-    setTitle("");
-    setAuthor("");
-    setUrl("");
-  };
+    })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
 
   const handleCalncelNewNote = e => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowForm(false);
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    setShowForm(false)
+  }
 
   return (
     <>
@@ -65,7 +65,7 @@ const AddBlogForm = ({ onBlogAdded }) => {
         <button onClick={handleCalncelNewNote}>cancel</button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default AddBlogForm;
+export default AddBlogForm
