@@ -67,6 +67,14 @@ const App = () => {
     setBlogs(sortBlogs(newBlogs));
   };
 
+  const handleBlogDelete = async id => {
+    const deletedBlog = await blogService.deleteBlog(id);
+    const newBlogs = blogs.filter(blog => {
+      return blog.id !== deletedBlog.id;
+    });
+    setBlogs(newBlogs);
+  };
+
   const sortBlogs = unsortedBlogs => {
     return unsortedBlogs.sort((a, b) => {
       if (a.likes < b.likes) {
@@ -113,7 +121,11 @@ const App = () => {
           {successMessage && <Message text={successMessage} />}
           <UserDetails user={user} onLogOut={handleLogOut} />
           <AddBlogForm onBlogAdded={handleBlogAdded} />
-          <BlogsList blogs={blogs} onLikeClick={handleLikeClick} />
+          <BlogsList
+            blogs={blogs}
+            onLikeClick={handleLikeClick}
+            onBlogDelete={handleBlogDelete}
+          />
         </>
       ) : (
         <>

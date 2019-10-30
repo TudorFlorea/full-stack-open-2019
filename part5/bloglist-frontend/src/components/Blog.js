@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const Blog = ({ blog, onLikeClick }) => {
+const Blog = ({ blog, onLikeClick, onBlogDelete }) => {
   const [showInfo, setShowInfo] = useState(false);
 
   const blogStyle = {
@@ -19,6 +19,14 @@ const Blog = ({ blog, onLikeClick }) => {
     });
   };
 
+  const handleRemoveClick = e => {
+    e.stopPropagation();
+    const shouldDelete = window.confirm(`remove blog ${blog.title}?`);
+    if (shouldDelete) {
+      onBlogDelete(blog.id);
+    }
+  };
+
   return (
     <div style={blogStyle} onClick={e => setShowInfo(!showInfo)}>
       <p>
@@ -34,6 +42,7 @@ const Blog = ({ blog, onLikeClick }) => {
             {blog.likes} likes <button onClick={handleLikeClick}>like</button>
           </p>
           <p>added by {blog.user.name}</p>
+          <button onClick={handleRemoveClick}>remove</button>
         </div>
       ) : null}
     </div>
