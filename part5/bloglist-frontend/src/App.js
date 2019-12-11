@@ -87,7 +87,7 @@ const App = () => {
         const blogsResult = await blogService.getAll()
         setBlogs(sortBlogs(blogsResult))
       } catch (err) {
-        setErrorMessage(err.response.error)
+        setErrorMessage(err.response && err.response.error)
       } finally {
         setTimeout(() => {
           setErrorMessage('')
