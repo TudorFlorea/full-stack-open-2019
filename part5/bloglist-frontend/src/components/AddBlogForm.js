@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import Heading from './Heading'
+import {useField} from '../hooks';
 
 const AddBlogForm = ({ onBlogAdded }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField("text");
+  const author = useField("text");
+  const url = useField("text");
   const [showForm, setShowForm] = useState(false)
 
   const hideWhenFormIsVisible = { display: showForm ? 'none' : '' }
@@ -13,13 +14,13 @@ const AddBlogForm = ({ onBlogAdded }) => {
   const handleNewBlogSubmit = e => {
     e.preventDefault()
     onBlogAdded({
-      title,
-      author,
-      url
+      title: title.value,
+      author: author.value,
+      url: url.value
     })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    title.reset();
+    author.reset();
+    url.reset();
   }
 
   const handleCalncelNewNote = e => {
@@ -31,33 +32,30 @@ const AddBlogForm = ({ onBlogAdded }) => {
   return (
     <>
       <button style={hideWhenFormIsVisible} onClick={() => setShowForm(true)}>
-        new note
+        new blog
       </button>
 
       <form onSubmit={handleNewBlogSubmit} style={showWhenFormIsVisible}>
         <Heading text="create new" />
         <label htmlFor="title">title</label>
         <input
+          {...title}
           id="title"
-          type="text"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          reset=""
         />
         <br />
         <label htmlFor="author">author</label>
         <input
+          {...author}
           id="author"
-          type="text"
-          value={author}
-          onChange={e => setAuthor(e.target.value)}
+          reset=""
         />
         <br />
         <label htmlFor="url">url</label>
         <input
+          {...url}
           id="url"
-          type="text"
-          value={url}
-          onChange={e => setUrl(e.target.value)}
+          reset=""
         />
         <br />
         <button type="submit">create</button>

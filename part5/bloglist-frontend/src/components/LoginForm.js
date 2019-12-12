@@ -1,32 +1,26 @@
 import React, { useState } from 'react'
+import {useField} from '../hooks';
 
 const LoginForm = ({ onSubmit }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
 
-  const handleUserNameChange = e => {
-    setUsername(e.target.value)
-  }
-
-  const handlePasswordChange = e => {
-    setPassword(e.target.value)
-  }
+  const username = useField('text');
+  const password = useField('password');
 
   const handleSubmit = e => {
     e.preventDefault()
     onSubmit({
-      username,
-      password
+      username: username.value,
+      password: password.value
     })
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="username">username</label>
-      <input type="text" value={username} onChange={handleUserNameChange} />
+      <input {...username} reset="" />
       <br />
       <label htmlFor="username">password</label>
-      <input type="password" value={password} onChange={handlePasswordChange} />
+      <input {...password} reset="" />
       <br />
       <button type="submit">login</button>
     </form>
