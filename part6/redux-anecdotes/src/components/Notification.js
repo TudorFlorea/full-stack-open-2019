@@ -1,19 +1,19 @@
 import React from 'react'
-
+import {connect} from 'react-redux';
 import {clearNotification} from '../reducers/notificationReducer';
 
-const Notification = ({store}) => {
+const Notification = (props) => {
   const style = {
     border: 'solid',
     padding: 10,
     borderWidth: 1
   }
 
-  const message = store.getState().notifications.message;
+  const message = props.message;
 
   if(message) {
     setTimeout(() => {
-      store.dispatch(clearNotification());
+     props.clearNotification();
     }, 5000)
   }
 
@@ -21,11 +21,26 @@ const Notification = ({store}) => {
     <>
       {message ? (
         <div style={style}>
-        {store.getState().notifications.message}
+        {message}
       </div>
       ) : (null)}
     </>
   )
 }
 
-export default Notification
+const mapStateToProps = state => {
+  return {
+    message: state.notifications.message
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    clearNotification: () => { dispatch(clearNotification()) }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Notification)
