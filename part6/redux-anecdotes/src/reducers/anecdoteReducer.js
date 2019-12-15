@@ -8,10 +8,10 @@ const asObject = (anecdote) => {
   }
 }
 
-export const addAnecdote = (content) => {
+export const addAnecdote = (data) => {
   return {
     type: 'NEW_ANECDOTE',
-    data: asObject(content)
+    data
   }
 }
 
