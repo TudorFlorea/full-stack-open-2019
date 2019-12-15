@@ -14,10 +14,28 @@ const App = (props) => {
       })
   }
 
+  const sortAnecdotes = anecdotes => {
+    return anecdotes.sort((a, b) => {
+      return b.votes - a.votes;
+    });
+  }
+
+  const addAnecdote = event => {
+    event.preventDefault();
+    const content = event.target.anecdote.value
+    store.dispatch({
+      type: 'NEW_ANECDOTE',
+      data: {
+        content
+      }
+    })
+    event.target.anecdote.value = ''
+  }
+
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {sortAnecdotes(anecdotes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -29,9 +47,9 @@ const App = (props) => {
         </div>
       )}
       <h2>create new</h2>
-      <form>
-        <div><input /></div>
-        <button>create</button>
+      <form onSubmit={addAnecdote}>
+        <div><input name="anecdote" /></div>
+        <button type="submit">create</button>
       </form>
     </div>
   )
