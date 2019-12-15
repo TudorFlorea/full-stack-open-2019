@@ -2,12 +2,17 @@ const initialState = {
     message: ""
 };
 
-export const createNotification = message => {
-    return {
-        type: "CREATE_NOTIFICATION",
-        data: {
-            message
-        }
+export const createNotification = (message, duration) => {
+    return dispatch => {
+        dispatch({
+            type: "CREATE_NOTIFICATION",
+            data: {
+                message
+            }
+        });
+        setTimeout(() => {
+            dispatch(clearNotification());
+        }, duration * 1000)
     }
 }
 

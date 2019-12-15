@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux';
-import {clearNotification} from '../reducers/notificationReducer';
 
 const Notification = (props) => {
   const style = {
@@ -10,12 +9,6 @@ const Notification = (props) => {
   }
 
   const message = props.message;
-
-  if(message) {
-    setTimeout(() => {
-     props.clearNotification();
-    }, 5000)
-  }
 
   return (
     <>
@@ -34,13 +27,6 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    clearNotification: () => { dispatch(clearNotification()) }
-  }
-}
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Notification)

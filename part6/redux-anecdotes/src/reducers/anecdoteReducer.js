@@ -1,36 +1,46 @@
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
+import AnecdotesService from '../services/anecdotes';
+import {createNotification} from './notificationReducer';
 
 export const addAnecdote = (data) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data
+  return async dispatch => {
+    const anecdote = await AnecdotesService.newAnecdote(data);
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: anecdote
+    });
+    dispatch(createNotification(`You created "${anecdote.content}"`, 5));
   }
 }
 
 export const vote = id => {
-  return {
-    type: 'VOTE',
-    data: {
-      id
-    }
+  return async (dispatch, getState) => {
+    const anecdotes = getState().anecdotes;
+    const anecdoteToChange = anecdotes.find(anecdote => anecdote.id === id);
+    const changedAnecdote = {
+      ...anecdoteToChange,
+      votes: ++anecdoteToChange.votes
+    };
+    const response = await AnecdotesService.changeAnecdote(changedAnecdote);
+    dispatch({
+      type: 'VOTE',
+      data: {
+        anecdote: response
+      }
+    })
+    dispatch(createNotification(`You voted "${response.content}"`, 5));
   }
 }
 
-export const initAnecdotes = anecdotes => {
-  return {
-    type: "INIT_ANECDOTES",
-    data: {
-      anecdotes
-    }
-  }
+export const initAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await AnecdotesService.getAll();
+    dispatch({
+      type: "INIT_ANECDOTES",
+      data: {
+        anecdotes
+      }
+    })
+  };
 }
 
 const initialState = []
@@ -41,15 +51,9 @@ const reducer = (state = initialState, action) => {
 
   switch(action.type) {
     case "VOTE":
-      const id = action.data.id;
-      const anecdoteToChange = state.find(anecdote => anecdote.id === id);
-      const changedAnecdote = {
-        ...anecdoteToChange,
-        votes: ++anecdoteToChange.votes
-      };
-
+      const anecdoteToChange = action.data.anecdote;
       return state.map(anecdote => {
-        return anecdote.id === id ? changedAnecdote: anecdote;
+        return anecdote.id === anecdoteToChange.id ? anecdoteToChange: anecdote;
       });
 
     case "INIT_ANECDOTES":
