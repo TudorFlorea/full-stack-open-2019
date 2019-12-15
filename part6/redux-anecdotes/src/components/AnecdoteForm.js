@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {addAnecdote} from "../reducers/anecdoteReducer"; 
+import {createNotification} from '../reducers/notificationReducer';
 
 const AnecdoteForm = ({store}) => {
 
@@ -8,6 +9,7 @@ const AnecdoteForm = ({store}) => {
         event.preventDefault();
         const content = event.target.anecdote.value
         store.dispatch(addAnecdote(content))
+        store.dispatch(createNotification(`You've created "${content}"`))
         event.target.anecdote.value = ''
       }
 
