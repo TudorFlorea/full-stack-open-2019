@@ -14,6 +14,7 @@ const CreateNew = (props) => {
         info,
         votes: 0
       })
+      props.history.push('/');
     }
   
     return (
