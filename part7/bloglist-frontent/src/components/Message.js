@@ -1,8 +1,9 @@
 import React from 'react'
 
-const Message = ({ text, isError = false }) => {
-  const classes = isError ? 'error' : 'notification'
-  return <p className={classes}>{text}</p>
+const Message = ({ notification }) => {
+  const {content, success} = notification;
+  const classes = success ? 'notification' : 'error'
+  return <p className={classes}>{content}</p>
 }
 
 export default Message

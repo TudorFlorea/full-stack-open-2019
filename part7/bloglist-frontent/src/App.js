@@ -8,67 +8,30 @@ import UserDetails from './components/UserDetails'
 import AddBlogForm from './components/AddBlogForm'
 import './App.css'
 import Message from './components/Message'
+import {connect} from 'react-redux';
+import { initBlogs, createBlog, updateBlog, deleteBlog } from './store/actions/blogActions'
+import {login, setAuthData, logout} from "./store/actions/authActions";
 
-const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
-  const [successMessage, setSuccessMessage] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+const App = (props) => {
 
-  const handleLogInSubmit = async credentials => {
-    try {
-      const user = await authService.login(credentials)
-
-      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
-
-      blogService.setToken(user.token)
-      setUser(user)
-    } catch (err) {
-      setErrorMessage(err.response.data.error)
-    }
-
-    setTimeout(() => {
-      setErrorMessage('')
-    }, 3000)
+  const handleLogInSubmit = credentials => {
+    props.login(credentials);
   }
 
   const handleLogOut = () => {
-    setUser(null)
-    window.localStorage.removeItem('loggedBlogUser')
+    props.logout()
   }
 
   const handleBlogAdded = async newBlog => {
-    try {
-      const blog = await blogService.addBlog(newBlog)
-      setBlogs([...blogs, blog])
-      setSuccessMessage(`a new blog ${blog.title} by ${blog.author}`)
-      console.log(blog)
-      setTimeout(() => {
-        setSuccessMessage('')
-      }, 3000)
-    } catch (err) {
-      console.log(err.response)
-      setErrorMessage(err.response.data.error)
-      setTimeout(() => {
-        setErrorMessage('')
-      }, 3000)
-    }
+    props.createBlog(newBlog)
   }
 
-  const handleLikeClick = async newBlog => {
-    const updatedBlog = await blogService.updateBlog(newBlog)
-    const newBlogs = blogs.map(blog => {
-      return blog.id === updatedBlog.id ? updatedBlog : blog
-    })
-    setBlogs(sortBlogs(newBlogs))
+  const handleLikeClick = newBlog => {
+    props.updateBlog(newBlog)
   }
 
-  const handleBlogDelete = async id => {
-    const deletedBlog = await blogService.deleteBlog(id)
-    const newBlogs = blogs.filter(blog => {
-      return blog.id !== deletedBlog.id
-    })
-    setBlogs(newBlogs)
+  const handleBlogDelete = id => {
+    props.deleteBlog(id);
   }
 
   const sortBlogs = unsortedBlogs => {
@@ -82,57 +45,35 @@ const App = () => {
   }
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const blogsResult = await blogService.getAll()
-        setBlogs(sortBlogs(blogsResult))
-      } catch (err) {
-        setErrorMessage(err.response && err.response.error)
-      } finally {
-        setTimeout(() => {
-          setErrorMessage('')
-        }, 3000)
-      }
-    }
-    getData()
-  }, [])
-
-  useEffect(() => {
     const localUser = window.localStorage.getItem('loggedBlogUser')
     if (localUser) {
       const user = JSON.parse(localUser)
-      setUser(user)
-      blogService.setToken(user.token)
+      props.setAuthData(user)
+      props.initBlogs();
     }
   }, [])
 
-  useEffect(() => {
-    setBlogs(sortBlogs(blogs))
-  }, [blogs])
-
   return (
     <div className="App">
-      {user ? (
+      {props.auth.user ? (
         <Heading text="blogs" />
       ) : (
         <Heading text="log in to application" />
       )}
-      {user ? (
+      {props.notification && <Message notification={props.notification} />}
+      {props.auth.user ? (
         <>
-          {errorMessage && <Message text={errorMessage} isError />}
-          {successMessage && <Message text={successMessage} />}
-          <UserDetails user={user} onLogOut={handleLogOut} />
+          <UserDetails user={props.auth.user} onLogOut={handleLogOut} />
           <AddBlogForm onBlogAdded={handleBlogAdded} />
           <BlogsList
-            blogs={blogs}
+            blogs={props.blogs}
             onLikeClick={handleLikeClick}
             onBlogDelete={handleBlogDelete}
-            user={user}
+            user={props.auth.user}
           />
         </>
       ) : (
         <>
-          {errorMessage && <Message text={errorMessage} isError />}
           <LoginForm onSubmit={handleLogInSubmit} />
         </>
       )}
@@ -140,4 +81,27 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = state => {
+    return {
+        blogs: state.blogs,
+        notification: state.notification,
+        auth: state.auth
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        initBlogs: () => dispatch(initBlogs()),
+        createBlog: blog => dispatch(createBlog(blog)),
+        deleteBlog: id => dispatch(deleteBlog(id)),
+        updateBlog: blog => dispatch(updateBlog(blog)),
+        login: credentials => dispatch(login(credentials)),
+        setAuthData: data => dispatch(setAuthData(data)),
+        logout: () => dispatch(logout())
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)
