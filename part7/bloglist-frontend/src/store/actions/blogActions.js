@@ -5,6 +5,7 @@ export const INIT_BLOGS = "INIT_BLOGS";
 export const CREATE_BLOG = "CREATE_BLOG";
 export const DELETE_BLOG = "DELETE_BLOG";
 export const UPDATE_BLOG = "UPDATE_BLOG";
+export const ADD_BLOG_COMMENT = "ADD_BLOG_COMMENT";
 
 export const initBlogs = () => {
     return async dispatch => {
@@ -113,5 +114,19 @@ export const updateBlog = blog => {
             }, 5000)
         }
 
+    }
+}
+
+export const addBlogComment = (id, data) => {
+    return async dispatch => {
+        try {
+            const updatedBlog = await BlogsService.addBlogComment(id, data);
+            dispatch({
+                type: ADD_BLOG_COMMENT,
+                data: updatedBlog
+            })
+        } catch (err) {
+            // TODO
+        }
     }
 }

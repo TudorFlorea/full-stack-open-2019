@@ -1,9 +1,14 @@
 import React from 'react'
 
-const BlogComments = ({comments}) => {
+import AddBlogCommentForm from './AddBlogCommentForm';
+
+const BlogComments = ({comments, onAddComment}) => {
+
+    
     return (
         <>
             <h2>Comments</h2>
+            <AddBlogCommentForm onAddComment={onAddComment} />
             {comments && comments.length ? (
                 <ul>
                     {comments.map((comment, i) => {
@@ -13,7 +18,6 @@ const BlogComments = ({comments}) => {
             ) : (
                 <p>No comments yet!</p>
             )}
-
         </>
     )
 }

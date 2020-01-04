@@ -104,4 +104,43 @@ blogRouter.put("/:id", async (request, response) => {
   }
 });
 
+blogRouter.post("/:id/comments", async (request, response) => {
+  const id = request.params.id;
+  const comment = request.body.comment;
+
+  try {
+    const blog = await Blog.findById(id);
+    if(blog) {
+      if(Array.isArray(blog.comments)) {
+        blog.comments.push(comment);
+      } else {
+        blog.comments = [comment];
+      }
+
+      const newBlog = await blog.save();
+
+      const fullBlog = await Blog.populate(newBlog, {
+        path: 'user'
+      });
+
+      response.status(200).json(
+        fullBlog
+      );
+
+    } else {
+      response.status(400).json({
+        error: `No blog with the following id: ${id}`
+      });
+    }
+    const udatedBlog = await Blog.findByIdAndUpdate(id, blog, {
+      new: true
+    }).populate("user");
+
+  } catch(err) {
+    response.status(400).json({
+      error: err.message
+    })
+  }
+})
+
 module.exports = blogRouter;

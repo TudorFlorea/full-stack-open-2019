@@ -1,4 +1,4 @@
-import {INIT_BLOGS, CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG} from "../actions/blogActions";
+import {INIT_BLOGS, CREATE_BLOG, DELETE_BLOG, UPDATE_BLOG, ADD_BLOG_COMMENT} from "../actions/blogActions";
 
 const initialState = [];
 
@@ -17,6 +17,13 @@ const blogsReducer = (state = initialState, action) => {
         }
 
         case UPDATE_BLOG: {
+            const newBlogs = state.map(blog => {
+                return blog.id !== action.data.id ? blog : action.data
+            });
+            return newBlogs;
+        }
+
+        case ADD_BLOG_COMMENT: {
             const newBlogs = state.map(blog => {
                 return blog.id !== action.data.id ? blog : action.data
             });

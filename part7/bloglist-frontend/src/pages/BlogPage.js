@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import BlogDetails from '../components/BlogDetails';
 import BlogComments from '../components/BlogComments';
-import {initBlogs, updateBlog, deleteBlog} from '../store/actions/blogActions';
+import {initBlogs, updateBlog, deleteBlog, addBlogComment} from '../store/actions/blogActions';
 
 const BlogPage = props => {
 
@@ -17,6 +17,10 @@ const BlogPage = props => {
     
     const onDelete = id => {
         props.deleteBlog(id);
+    }
+
+    const onAddComment = comment => {
+        props.addBlogComment(blogId, comment)
     }
 
     useEffect(() => {
@@ -34,7 +38,7 @@ const BlogPage = props => {
                 onLike={onLike}
                 onDelete={onDelete}
             />}
-            {currentBlog && currentBlog.comments && <BlogComments comments={currentBlog.comments} />}
+            {currentBlog && <BlogComments onAddComment={onAddComment} comments={currentBlog.comments} />}
         </>
     )
 }
@@ -50,7 +54,8 @@ const mapDispatchToProps = dispatch => {
     return {
         initBlogs: () => dispatch(initBlogs()),
         deleteBlog: id => dispatch(deleteBlog(id)),
-        updateBlog: blog => dispatch(updateBlog(blog))
+        updateBlog: blog => dispatch(updateBlog(blog)),
+        addBlogComment: (id, data) => dispatch(addBlogComment(id, data))
     }
 }
 
