@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard'
 import Users from './pages/Users'
 import User from './pages/User'
 import BlogPage from './pages/BlogPage'
+import Signup from './pages/Signup'
 import Nav from './components/Nav'
 import Message from './components/Message'
 
@@ -29,7 +30,7 @@ const App = props => {
             <Switch>
               <Route path="/" exact component={Dashboard} />
               <Route path="/login" exact component={Login} />
-              <Route path="/signup" exact component={() => <p>signup</p>} />
+              <Route path="/signup" exact component={Signup} />
               <Route path="/users" exact component={Users} />
               <Route path="/users/:id" component={User} />
               <Route path="/blogs/:id" component={BlogPage} />
