@@ -2,15 +2,10 @@ import React, {useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux';
 
-import Heading from '../components/Heading';
-import UserDetails from '../components/UserDetails';
 import UsersList from '../components/UsersList';
-import {logout} from "../store/actions/authActions";
 import {initUsers} from '../store/actions/usersActions';
 
 const Users = props => {
-
-    console.log(props);
 
     useEffect(() => {
         props.initUsers()
@@ -20,8 +15,6 @@ const Users = props => {
 
     return (
         <>
-            <Heading text="blogs" />
-            <UserDetails user={props.auth.user} onLogOut={() => {props.logout()}} />
             <UsersList users={props.users} />
         </>
     )
@@ -37,7 +30,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(logout()),
         initUsers: () => dispatch(initUsers())
     }
 }

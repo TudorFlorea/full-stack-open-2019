@@ -1,3 +1,17 @@
+.nav {
+  background-color: rgb(221, 221, 221);
+}
+
+.nav a {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.user-details {
+  display: inline-block;
+  margin: 5px;
+}
+
 .notification,
 .error {
   border: 1px solid;

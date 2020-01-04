@@ -1,21 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import {connect} from 'react-redux';
 
 import { initBlogs, createBlog, updateBlog, deleteBlog } from '../store/actions/blogActions'
-import {setAuthData, logout} from "../store/actions/authActions";
 
 import BlogsList from '../components/BlogsList'
 import Heading from '../components/Heading'
-import UserDetails from '../components/UserDetails'
 import AddBlogForm from '../components/AddBlogForm'
 import Message from '../components/Message'
 
 const Dashboard = (props) => {
-
-  const handleLogOut = () => {
-    props.logout()
-  }
 
   const handleBlogAdded = async newBlog => {
     props.createBlog(newBlog)
@@ -47,9 +41,8 @@ const Dashboard = (props) => {
 
   return (
     <div className="App">
-        <Heading text="blogs" />
+        <Heading text="blog app" />
         {props.notification && <Message notification={props.notification} />}
-        <UserDetails user={props.auth.user} onLogOut={handleLogOut} />
         <AddBlogForm onBlogAdded={handleBlogAdded} />
         <BlogsList
             blogs={sortBlogs(props.blogs)}
@@ -74,10 +67,7 @@ const mapDispatchToProps = dispatch => {
         initBlogs: () => dispatch(initBlogs()),
         createBlog: blog => dispatch(createBlog(blog)),
         deleteBlog: id => dispatch(deleteBlog(id)),
-        updateBlog: blog => dispatch(updateBlog(blog)),
-        login: credentials => dispatch(login(credentials)),
-        setAuthData: data => dispatch(setAuthData(data)),
-        logout: () => dispatch(logout())
+        updateBlog: blog => dispatch(updateBlog(blog))
     }
 }
 

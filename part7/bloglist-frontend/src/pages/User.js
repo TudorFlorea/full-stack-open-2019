@@ -1,10 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import Heading from '../components/Heading';
-import UserDetails from '../components/UserDetails';
 import UserBlogs from '../components/UserBlogs';
-import {logout} from "../store/actions/authActions";
 import {initUsers} from '../store/actions/usersActions';
 
 const User = props => {
@@ -16,8 +13,6 @@ const User = props => {
 
     return (
         <>
-            <Heading text="blogs" />
-            <UserDetails user={props.auth.user} onLogOut={() => {props.logout()}} />
             <UserBlogs user={user} />
         </>
     )
@@ -33,7 +28,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(logout()),
         initUsers: () => dispatch(initUsers())
     }
 }

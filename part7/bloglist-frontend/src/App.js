@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {initAuth} from './store/actions/authActions';
+import {initAuth, logout} from './store/actions/authActions';
 import './App.css'
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import User from './pages/User';
 import BlogPage from './pages/BlogPage';
+import Nav from './components/Nav'
 
 const App = props => {
 
@@ -21,6 +22,7 @@ const App = props => {
         {props.auth.isReady ? (
           <>
             <BrowserRouter>
+              <Nav user={props.auth.user} onLogout={props.logout} />
               <Switch>
                 <Route path="/" exact component={Dashboard} />
                 <Route path="/login" exact component={Login} />
@@ -45,7 +47,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    initAuth: () => dispatch(initAuth())
+    initAuth: () => dispatch(initAuth()),
+    logout: () => dispatch(logout())
   }
 }
 

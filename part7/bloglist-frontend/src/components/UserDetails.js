@@ -2,7 +2,7 @@ import React from 'react'
 
 const UserDetails = ({ user, onLogOut }) => {
   return (
-    <p>
+    <p className="user-details">
       {user.name} logged in{' '}
       <button
         onClick={() => {
