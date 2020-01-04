@@ -1,35 +1,38 @@
 import React from 'react'
+import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import Heading from './Heading'
 
 const BlogDetails = props => {
 
-    const {blog, user, onLike, onDelete} = props;
+  const { blog, user, onLike, onDelete } = props
 
-    const handleLikeClick = () => {
-        onLike({
-            ...blog,
-            user: blog.user.id,
-            likes: ++blog.likes
-        });
-    }
+  const handleLikeClick = () => {
+    onLike({
+      ...blog,
+      user: blog.user.id,
+      likes: ++blog.likes
+    })
+  }
 
-    const handleDeleteClick = () => {
-        onDelete(blog.id);
-    }
+  const handleDeleteClick = () => {
+    onDelete(blog.id)
+  }
 
-    if(!blog) return null;
+  if(!blog) return null
 
-    return (
-        <div>
-            <h1>{blog.title}</h1>
-            <a href={blog.url}>{blog.url}</a>
-            <p>{blog.likes} likes <button onClick={handleLikeClick}>like</button></p>
-            {blog.user && <p>added by {blog.user.name}</p>}
-            {user.username === (blog.user && blog.user.username) ? (
-             <button onClick={handleDeleteClick}>remove</button>
-            ) : null}
-           
-        </div>
-    )
+  return (
+    <div>
+      <Heading text={blog.title} />
+      <a className="blog-url" href={blog.url}>{blog.url}</a>
+      <p>{blog.likes} likes <Button variant="primary" onClick={handleLikeClick}>like</Button></p>
+      {blog.user && <p>added by <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link></p>}
+      {user.username === (blog.user && blog.user.username) ? (
+        <Button variant="danger" onClick={handleDeleteClick}>remove</Button>
+      ) : null}
+
+    </div>
+  )
 }
 
-export default BlogDetails;
+export default BlogDetails

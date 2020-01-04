@@ -2,6 +2,10 @@
   background-color: rgb(221, 221, 221);
 }
 
+.navbar-nav {
+  align-items: center;
+}
+
 .nav a {
   display: inline-block;
   margin: 0 5px;
@@ -9,7 +13,7 @@
 
 .user-details {
   display: inline-block;
-  margin: 5px;
+  margin: 0px;
 }
 
 .notification,
@@ -22,6 +26,18 @@
   background: lightgray;
 }
 
+.App .card {
+  margin-top: 20px;
+}
+
+.App .alert {
+  margin-top: 20px;
+}
+
+.App .heading {
+  margin: 20px 0;
+}
+
 .notification {
   color: green;
   border-color: green;
@@ -30,4 +46,13 @@
 .error {
   color: red;
   border-color: red;
+}
+
+.create-blog {
+  margin-right: 10px;
+}
+
+.blog-url {
+  display: block;
+  margin: 10px 0;
 }

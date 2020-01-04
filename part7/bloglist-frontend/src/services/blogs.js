@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = BACKEND_URL + '/api/blogs'
+const baseUrl = BACKEND_URL + '/api/blogs' // eslint-disable-line no-undef
 
 let token = null
 
@@ -43,8 +43,8 @@ const getAll = () => {
 }
 
 const addBlogComment = async (blogId, data) => {
-  const request = await axios.post(`${baseUrl}/${blogId}/comments`, data);
-  return request.data;
+  const request = await axios.post(`${baseUrl}/${blogId}/comments`, data)
+  return request.data
 }
 
 export default { getAll, addBlog, updateBlog, deleteBlog, addBlogComment, setToken }

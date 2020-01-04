@@ -1,16 +1,18 @@
 import React from 'react'
+import { Button } from 'react-bootstrap'
 
 const UserDetails = ({ user, onLogOut }) => {
   return (
     <p className="user-details">
       {user.name} logged in{' '}
-      <button
+      <Button
+        variant="light"
         onClick={() => {
           onLogOut()
         }}
       >
         logout
-      </button>
+      </Button>
     </p>
   )
 }

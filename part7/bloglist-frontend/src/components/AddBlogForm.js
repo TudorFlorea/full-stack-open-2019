@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import Heading from './Heading'
-import {useField} from '../hooks';
+import { useField } from '../hooks'
+import { Form, Button } from 'react-bootstrap'
 
 const AddBlogForm = ({ onBlogAdded }) => {
-  const title = useField("text");
-  const author = useField("text");
-  const url = useField("text");
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const [showForm, setShowForm] = useState(false)
 
   const hideWhenFormIsVisible = { display: showForm ? 'none' : '' }
@@ -18,9 +18,9 @@ const AddBlogForm = ({ onBlogAdded }) => {
       author: author.value,
       url: url.value
     })
-    title.reset();
-    author.reset();
-    url.reset();
+    title.reset()
+    author.reset()
+    url.reset()
   }
 
   const handleCalncelNewNote = e => {
@@ -31,37 +31,26 @@ const AddBlogForm = ({ onBlogAdded }) => {
 
   return (
     <>
-      <button style={hideWhenFormIsVisible} onClick={() => setShowForm(true)}>
-        new blog
-      </button>
+      <Button variant="info" style={hideWhenFormIsVisible} onClick={() => setShowForm(true)}>
+        New blog
+      </Button>
 
-      <form onSubmit={handleNewBlogSubmit} style={showWhenFormIsVisible}>
-        <Heading text="create new" />
-        <label htmlFor="title">title</label>
-        <input
-          {...title}
-          id="title"
-          reset=""
-        />
-        <br />
-        <label htmlFor="author">author</label>
-        <input
-          {...author}
-          id="author"
-          reset=""
-        />
-        <br />
-        <label htmlFor="url">url</label>
-        <input
-          {...url}
-          id="url"
-          reset=""
-        />
-        <br />
-        <button type="submit">create</button>
-        <br />
-        <button onClick={handleCalncelNewNote}>cancel</button>
-      </form>
+      <Form onSubmit={handleNewBlogSubmit} style={showWhenFormIsVisible}>
+        <Form.Group controlId="title">
+          <Form.Label>Title</Form.Label>
+          <Form.Control {...title} reset="" placeholder="Blog title" />
+        </Form.Group>
+        <Form.Group controlId="author">
+          <Form.Label>Title</Form.Label>
+          <Form.Control {...author} reset="" placeholder="Blog author" />
+        </Form.Group>
+        <Form.Group controlId="url">
+          <Form.Label>Url</Form.Label>
+          <Form.Control {...url} reset="" placeholder="Blog url" />
+        </Form.Group>
+        <Button className="create-blog" type="submit" variant="success">Create blog</Button>
+        <Button onClick={handleCalncelNewNote} variant="warning">Cancel</Button>
+      </Form>
     </>
   )
 }

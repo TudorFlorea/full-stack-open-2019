@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import {useField} from '../hooks';
+import React from 'react'
+import { useField } from '../hooks'
+import { Form, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 const LoginForm = ({ onSubmit }) => {
 
-  const username = useField('text');
-  const password = useField('password');
+  const username = useField('text')
+  const password = useField('password')
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -15,15 +17,24 @@ const LoginForm = ({ onSubmit }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="username">username</label>
-      <input {...username} reset="" />
-      <br />
-      <label htmlFor="username">password</label>
-      <input {...password} reset="" />
-      <br />
-      <button type="submit">login</button>
-    </form>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="username">
+        <Form.Label>Username</Form.Label>
+        <Form.Control {...username} reset="" placeholder="Enter username" />
+      </Form.Group>
+      <Form.Group controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control {...password} reset="" placeholder="Enter password" />
+      </Form.Group>
+      <Button variant="primary" type="submit">
+          Login
+      </Button>
+      <Form.Group>
+        <Form.Text className="text-muted">
+            or <Link to="/signup">Signup</Link>
+        </Form.Text>
+      </Form.Group>
+    </Form>
   )
 }
 
