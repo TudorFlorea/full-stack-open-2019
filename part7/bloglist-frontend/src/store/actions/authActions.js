@@ -1,9 +1,11 @@
 import AuthSevice from '../../services/auth';
 import BlogService from '../../services/blogs';
+import {getAuthData} from '../../utils/AuthUtil';
 import {CREATE_NOTIFICATION, CLEAR_NOTIFICATION} from './notificationActions';
 
 export const LOGIN = "LOGIN";
 export const SET_AUTH_DATA = "SET_AUTH_DATA";
+export const INIT_AUTH = "INIT_AUTH";
 export const LOGOUT = "LOGOUT";
 
 export const login = credentials => {
@@ -34,6 +36,19 @@ export const login = credentials => {
         }
     }
 };
+
+export const initAuth = () => {
+    const authData = getAuthData();
+    if(authData) {
+        BlogService.setToken(authData.token);
+    } else {
+        BlogService.setToken('');
+    }
+    return {
+        type: INIT_AUTH,
+        data: authData
+    }
+}
 
 export const setAuthData = data => {
     return {

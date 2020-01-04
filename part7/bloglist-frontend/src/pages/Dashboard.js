@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import blogService from './services/blogs'
-import authService from './services/auth'
-import BlogsList from './components/BlogsList'
-import LoginForm from './components/LoginForm'
-import Heading from './components/Heading'
-import UserDetails from './components/UserDetails'
-import AddBlogForm from './components/AddBlogForm'
-import './App.css'
-import Message from './components/Message'
+import { Redirect } from 'react-router-dom'
 import {connect} from 'react-redux';
-import { initBlogs, createBlog, updateBlog, deleteBlog } from './store/actions/blogActions'
-import {login, setAuthData, logout} from "./store/actions/authActions";
 
-const App = (props) => {
+import { initBlogs, createBlog, updateBlog, deleteBlog } from '../store/actions/blogActions'
+import {setAuthData, logout} from "../store/actions/authActions";
 
-  const handleLogInSubmit = credentials => {
-    props.login(credentials);
-  }
+import BlogsList from '../components/BlogsList'
+import Heading from '../components/Heading'
+import UserDetails from '../components/UserDetails'
+import AddBlogForm from '../components/AddBlogForm'
+import Message from '../components/Message'
+
+const Dashboard = (props) => {
 
   const handleLogOut = () => {
     props.logout()
@@ -45,38 +40,23 @@ const App = (props) => {
   }
 
   useEffect(() => {
-    const localUser = window.localStorage.getItem('loggedBlogUser')
-    if (localUser) {
-      const user = JSON.parse(localUser)
-      props.setAuthData(user)
-      props.initBlogs();
-    }
+    props.initBlogs();
   }, [])
+
+  if(!props.auth.user) return <Redirect to="/login" />
 
   return (
     <div className="App">
-      {props.auth.user ? (
         <Heading text="blogs" />
-      ) : (
-        <Heading text="log in to application" />
-      )}
-      {props.notification && <Message notification={props.notification} />}
-      {props.auth.user ? (
-        <>
-          <UserDetails user={props.auth.user} onLogOut={handleLogOut} />
-          <AddBlogForm onBlogAdded={handleBlogAdded} />
-          <BlogsList
-            blogs={props.blogs}
+        {props.notification && <Message notification={props.notification} />}
+        <UserDetails user={props.auth.user} onLogOut={handleLogOut} />
+        <AddBlogForm onBlogAdded={handleBlogAdded} />
+        <BlogsList
+            blogs={sortBlogs(props.blogs)}
             onLikeClick={handleLikeClick}
             onBlogDelete={handleBlogDelete}
             user={props.auth.user}
           />
-        </>
-      ) : (
-        <>
-          <LoginForm onSubmit={handleLogInSubmit} />
-        </>
-      )}
     </div>
   )
 }
@@ -104,4 +84,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(App)
+)(Dashboard)
