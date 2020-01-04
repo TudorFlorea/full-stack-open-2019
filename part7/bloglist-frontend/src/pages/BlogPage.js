@@ -2,10 +2,8 @@ import React, {useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux';
 
-import Heading from '../components/Heading';
-import UserDetails from '../components/UserDetails';
 import BlogDetails from '../components/BlogDetails';
-import {logout} from "../store/actions/authActions";
+import BlogComments from '../components/BlogComments';
 import {initBlogs, updateBlog, deleteBlog} from '../store/actions/blogActions';
 
 const BlogPage = props => {
@@ -19,7 +17,6 @@ const BlogPage = props => {
     
     const onDelete = id => {
         props.deleteBlog(id);
-        // props.history.push('/');
     }
 
     useEffect(() => {
@@ -31,14 +28,13 @@ const BlogPage = props => {
 
     return (
         <>
-            <Heading text="blogs" />
-            <UserDetails user={props.auth.user} onLogOut={() => {props.logout()}} />
             {currentBlog && <BlogDetails 
                 blog={currentBlog}
                 user={props.auth.user}
                 onLike={onLike}
                 onDelete={onDelete}
             />}
+            {currentBlog && currentBlog.comments && <BlogComments comments={currentBlog.comments} />}
         </>
     )
 }
@@ -52,7 +48,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(logout()),
         initBlogs: () => dispatch(initBlogs()),
         deleteBlog: id => dispatch(deleteBlog(id)),
         updateBlog: blog => dispatch(updateBlog(blog))
