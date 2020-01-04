@@ -1,25 +1,26 @@
 import React from 'react'
+import { ListGroup } from 'react-bootstrap'
+import AddBlogCommentForm from './AddBlogCommentForm'
+import Heading from './Heading'
 
-import AddBlogCommentForm from './AddBlogCommentForm';
+const BlogComments = ({ comments, onAddComment }) => {
 
-const BlogComments = ({comments, onAddComment}) => {
 
-    
-    return (
-        <>
-            <h2>Comments</h2>
-            <AddBlogCommentForm onAddComment={onAddComment} />
-            {comments && comments.length ? (
-                <ul>
-                    {comments.map((comment, i) => {
-                        return <li key={`${comment}-${i}`}>{comment}</li>
-                    })}
-                </ul>
-            ) : (
-                <p>No comments yet!</p>
-            )}
-        </>
-    )
+  return (
+    <>
+      <Heading text="Comments" />
+      <AddBlogCommentForm onAddComment={onAddComment} />
+      {comments && comments.length ? (
+        <ListGroup>
+          {comments.map((comment, i) => {
+            return <ListGroup.Item key={`${comment}-${i}`}>{comment}</ListGroup.Item>
+          })}
+        </ListGroup>
+      ) : (
+        <p>No comments yet!</p>
+      )}
+    </>
+  )
 }
 
-export default BlogComments;
+export default BlogComments

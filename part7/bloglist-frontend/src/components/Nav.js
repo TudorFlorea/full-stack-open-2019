@@ -1,20 +1,31 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
-import UserDetails from './UserDetails';
+import { Link } from 'react-router-dom'
+import { Navbar, Nav } from 'react-bootstrap'
+import UserDetails from './UserDetails'
 
-const Nav = ({user, onLogout}) => {
+const Navigation = ({ user, onLogout }) => {
 
-    return (
-        <>
-            {user ? (
-                <div className="nav">
-                    <Link to="/">Blogs</Link>
-                    <Link to="/users">Users</Link>
-                    <UserDetails user={user} onLogOut={onLogout} />
-                </div>
-            ) : (null)} 
-        </>
-    )
+  return (
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
+        <Nav className="mr-auto">
+          <Nav.Link href="#" as="span">
+            <Link to="/">Blogs</Link>
+          </Nav.Link>
+          <Nav.Link href="#" as="span">
+            <Link to="/users">Users</Link>
+          </Nav.Link>
+          <Nav.Link href="#" as="span">
+            {user
+              ? <UserDetails user={user} onLogOut={onLogout} />
+              : <Link to="/login">login</Link>
+            }
+          </Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  )
 }
 
-export default Nav;
+export default Navigation

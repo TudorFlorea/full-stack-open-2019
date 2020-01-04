@@ -1,9 +1,13 @@
 import React from 'react'
+import { Alert } from 'react-bootstrap'
 
 const Message = ({ notification }) => {
-  const {content, success} = notification;
-  const classes = success ? 'notification' : 'error'
-  return <p className={classes}>{content}</p>
+  const { content, success } = notification
+  return (
+    <Alert variant={success ? 'success' : 'danger'}>
+      {content}
+    </Alert>
+  )
 }
 
 export default Message

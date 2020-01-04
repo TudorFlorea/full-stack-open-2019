@@ -1,33 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {Link} from 'react-router-dom';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import { Card } from 'react-bootstrap'
 
 const Blog = ({ blog }) => {
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5
-  };
   return (
     <Link to={`/blogs/${blog.id}`}>
-        <div style={blogStyle}>
-        <p className="blog-title">
-          {blog.title} {blog.author}
-        </p>
-      </div>
+      <Card bg="info" text="white">
+        <Card.Body>{blog.title} {blog.author}</Card.Body>
+      </Card>
     </Link>
-
-  );
-};
+  )
+}
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   onLikeClick: PropTypes.func.isRequired,
   onBlogDelete: PropTypes.func.isRequired
-};
+}
 
-export default Blog;
+export default Blog

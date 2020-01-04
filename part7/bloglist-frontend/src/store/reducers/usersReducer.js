@@ -1,16 +1,16 @@
-import {INIT_USERS} from '../actions/usersActions';
+import { INIT_USERS } from '../actions/usersActions'
 
-const initialState = [];
+const initialState = []
 
 const usersReducer = (state = initialState, action) => {
 
-    switch(action.type) {
-        case INIT_USERS:
-            return action.data
+  switch(action.type) {
+  case INIT_USERS:
+    return action.data
 
-        default:
-            return state;
-    }
+  default:
+    return state
+  }
 }
 
-export default usersReducer;
+export default usersReducer

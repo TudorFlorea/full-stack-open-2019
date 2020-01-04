@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const SimpleBlog = ({ blog, onClick }) => (
   <div>
@@ -12,6 +12,6 @@ const SimpleBlog = ({ blog, onClick }) => (
       </button>
     </div>
   </div>
-);
+)
 
-export default SimpleBlog;
+export default SimpleBlog
