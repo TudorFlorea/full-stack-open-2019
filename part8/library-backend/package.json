@@ -1,0 +1,14 @@
+{
+  "name": "library-backend",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node library-backend.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.9.15",
+    "graphql": "^14.5.8"
+  }
+}
