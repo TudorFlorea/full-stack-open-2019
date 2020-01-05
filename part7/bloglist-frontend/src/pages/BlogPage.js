@@ -27,7 +27,6 @@ const BlogPage = props => {
     props.initBlogs()
   }, [])
 
-  if(!props.auth.user) return <Redirect to="/login" />
   if(!currentBlog) return <Redirect to="/" />
 
   return (

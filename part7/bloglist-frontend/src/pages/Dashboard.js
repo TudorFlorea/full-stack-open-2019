@@ -36,12 +36,10 @@ const Dashboard = (props) => {
     props.initBlogs()
   }, [])
 
-  if(!props.auth.user) return <Redirect to="/login" />
-
   return (
     <div className="App">
       <Heading text="Blog app" />
-      <AddBlogForm onBlogAdded={handleBlogAdded} />
+      {props.auth.user && <AddBlogForm onBlogAdded={handleBlogAdded} />}
       <BlogsList
         blogs={sortBlogs(props.blogs)}
         onLikeClick={handleLikeClick}

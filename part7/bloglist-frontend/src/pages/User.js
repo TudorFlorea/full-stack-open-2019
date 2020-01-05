@@ -9,8 +9,6 @@ const User = props => {
   const userId = props.match.params.id
   const user = props.users.find(u => u.id === userId)
 
-  if(!props.auth.user) return <Redirect to="/login" />
-
   return (
     <>
       <UserBlogs user={user} />

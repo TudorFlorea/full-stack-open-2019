@@ -12,8 +12,6 @@ const Users = props => {
     props.initUsers()
   }, [])
 
-  if(!props.auth.user) return <Redirect to="/login" />
-
   return (
     <>
       <Heading text="Users" />

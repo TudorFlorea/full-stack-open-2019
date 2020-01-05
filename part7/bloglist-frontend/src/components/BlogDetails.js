@@ -27,7 +27,7 @@ const BlogDetails = props => {
       <a className="blog-url" href={blog.url}>{blog.url}</a>
       <p>{blog.likes} likes <Button variant="primary" onClick={handleLikeClick}>like</Button></p>
       {blog.user && <p>added by <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link></p>}
-      {user.username === (blog.user && blog.user.username) ? (
+      {user && user.username === (blog.user && blog.user.username) ? (
         <Button variant="danger" onClick={handleDeleteClick}>remove</Button>
       ) : null}
 
