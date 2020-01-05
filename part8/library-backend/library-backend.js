@@ -117,6 +117,11 @@ type Mutation {
         published: Int!
         genres: [String!]!
     ): Book
+
+    editAuthor(
+        name: String!
+        setBornTo: Int!
+    ): Author
 }
 `
 
@@ -166,6 +171,18 @@ const resolvers = {
 
         return book;
 
+      },
+      editAuthor: (root, args) => {
+            const authorToEdit = authors.find(author => author.name === args.name);
+            if(authorToEdit) {
+                authorToEdit.born = args.setBornTo;
+                authors = authors.map(author => {
+                    return author.id === authorToEdit.id ? authorToEdit : author;
+                })
+                return authorToEdit;
+            } else {
+                return null
+            }
       }
   }
 }
