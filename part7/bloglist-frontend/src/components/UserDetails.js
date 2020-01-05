@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 
 const UserDetails = ({ user, onLogOut }) => {
   return (
-    <p className="user-details">
+    <p data-cy="user-details" className="user-details">
       {user.name} logged in{' '}
       <Button
         variant="light"

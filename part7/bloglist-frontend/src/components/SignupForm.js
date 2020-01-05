@@ -22,17 +22,17 @@ const SignupForm = ({ onSubmit }) => {
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="name">
         <Form.Label>Name</Form.Label>
-        <Form.Control {...name} reset="" placeholder="Enter name" />
+        <Form.Control data-cy="signup-name" {...name} reset="" placeholder="Enter name" />
       </Form.Group>
       <Form.Group controlId="username">
         <Form.Label>Username</Form.Label>
-        <Form.Control {...username} reset="" placeholder="Enter username" />
+        <Form.Control data-cy="signup-username" {...username} reset="" placeholder="Enter username" />
       </Form.Group>
       <Form.Group controlId="password">
         <Form.Label>Password</Form.Label>
-        <Form.Control {...password} reset="" placeholder="Enter password" />
+        <Form.Control data-cy="signup-password" {...password} reset="" placeholder="Enter password" />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button data-cy="signup-submit" variant="primary" type="submit">
           Signup
       </Button>
       <Form.Group>

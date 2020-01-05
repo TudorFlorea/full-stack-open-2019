@@ -5,7 +5,8 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "start": "cross-env NODE_ENV=production node index.js",
-    "watch": "cross-env NODE_ENV=development nodemon index.js"
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "start:test": "cross-env NODE_ENV=test node index.js"
   },
   "jest": {
     "testEnvironment": "node"

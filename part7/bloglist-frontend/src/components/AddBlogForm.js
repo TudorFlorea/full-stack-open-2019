@@ -31,25 +31,25 @@ const AddBlogForm = ({ onBlogAdded }) => {
 
   return (
     <>
-      <Button variant="info" style={hideWhenFormIsVisible} onClick={() => setShowForm(true)}>
+      <Button data-cy="add-blog-show" variant="info" style={hideWhenFormIsVisible} onClick={() => setShowForm(true)}>
         New blog
       </Button>
 
       <Form onSubmit={handleNewBlogSubmit} style={showWhenFormIsVisible}>
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
-          <Form.Control {...title} reset="" placeholder="Blog title" />
+          <Form.Control data-cy="add-blog-title" {...title} reset="" placeholder="Blog title" />
         </Form.Group>
         <Form.Group controlId="author">
-          <Form.Label>Title</Form.Label>
-          <Form.Control {...author} reset="" placeholder="Blog author" />
+          <Form.Label>Author</Form.Label>
+          <Form.Control data-cy="add-blog-author" {...author} reset="" placeholder="Blog author" />
         </Form.Group>
         <Form.Group controlId="url">
           <Form.Label>Url</Form.Label>
-          <Form.Control {...url} reset="" placeholder="Blog url" />
+          <Form.Control data-cy="add-blog-url" {...url} reset="" placeholder="Blog url" />
         </Form.Group>
-        <Button className="create-blog" type="submit" variant="success">Create blog</Button>
-        <Button onClick={handleCalncelNewNote} variant="warning">Cancel</Button>
+        <Button data-cy="add-blog-submit" className="create-blog" type="submit" variant="success">Create blog</Button>
+        <Button data-cy="add-blog-cancel" onClick={handleCalncelNewNote} variant="warning">Cancel</Button>
       </Form>
     </>
   )

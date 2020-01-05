@@ -24,11 +24,11 @@ const BlogDetails = props => {
   return (
     <div>
       <Heading text={blog.title} />
-      <a className="blog-url" href={blog.url}>{blog.url}</a>
-      <p>{blog.likes} likes <Button variant="primary" onClick={handleLikeClick}>like</Button></p>
-      {blog.user && <p>added by <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link></p>}
-      {user.username === (blog.user && blog.user.username) ? (
-        <Button variant="danger" onClick={handleDeleteClick}>remove</Button>
+      <a data-cy='blog-url' className="blog-url" href={blog.url}>{blog.url}</a>
+      <p data-cy='blog-likes'>{blog.likes} likes <Button data-cy='blog-like-button' variant="primary" onClick={handleLikeClick}>like</Button></p>
+      {blog.user && <p data-cy='blog-user'>added by <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link></p>}
+      {user && user.username === (blog.user && blog.user.username) ? (
+        <Button data-cy='blog-remove' variant="danger" onClick={handleDeleteClick}>remove</Button>
       ) : null}
 
     </div>

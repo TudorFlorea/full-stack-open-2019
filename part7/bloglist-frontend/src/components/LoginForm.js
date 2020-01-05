@@ -20,13 +20,13 @@ const LoginForm = ({ onSubmit }) => {
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="username">
         <Form.Label>Username</Form.Label>
-        <Form.Control {...username} reset="" placeholder="Enter username" />
+        <Form.Control data-cy="login-username" {...username} reset="" placeholder="Enter username" />
       </Form.Group>
       <Form.Group controlId="password">
         <Form.Label>Password</Form.Label>
-        <Form.Control {...password} reset="" placeholder="Enter password" />
+        <Form.Control data-cy="login-password" {...password} reset="" placeholder="Enter password" />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button data-cy="login-submit" variant="primary" type="submit">
           Login
       </Button>
       <Form.Group>
