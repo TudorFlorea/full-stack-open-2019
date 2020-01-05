@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import BirthYear from './BirthYear'
 
 const Authors = (props) => {
   if (!props.show) {
@@ -30,7 +31,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
+      <BirthYear authors={authors} setBirthYear={props.setBirthYear} />
     </div>
   )
 }
