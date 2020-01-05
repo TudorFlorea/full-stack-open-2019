@@ -11,7 +11,7 @@ const BlogComments = ({ comments, onAddComment }) => {
       <Heading text="Comments" />
       <AddBlogCommentForm onAddComment={onAddComment} />
       {comments && comments.length ? (
-        <ListGroup>
+        <ListGroup data-cy="blog-comments">
           {comments.map((comment, i) => {
             return <ListGroup.Item key={`${comment}-${i}`}>{comment}</ListGroup.Item>
           })}

@@ -17,9 +17,9 @@ const AddBlogCommentForm = ({ onAddComment }) => {
   return (
     <Form onSubmit={handleCommentSubmit}>
       <Form.Group controlId="title">
-        <Form.Control {...comment} reset="" placeholder="Wite a comment" />
+        <Form.Control data-cy="add-comment-value" {...comment} reset="" placeholder="Wite a comment" />
       </Form.Group>
-      <Button type="submit" variant="info">Add comment</Button>
+      <Button data-cy="add-comment-submit" type="submit" variant="info">Add comment</Button>
     </Form>
   )
 
