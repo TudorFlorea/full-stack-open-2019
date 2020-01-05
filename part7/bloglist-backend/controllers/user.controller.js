@@ -20,16 +20,6 @@ usersRouter.get("/", async (req, res) => {
   }
 });
 
-usersRouter.get("/hash", async (req, res) => {
-  const password = req.query.password;
-  const passwordHash = await bcrypt.hash(password, 10); 
-
-  res.json({
-    password: passwordHash
-  });
-
-});
-
 usersRouter.post("/", async (req, res) => {
   const body = req.body;
   if (!body.password || (body.password.length && body.password.length < 3)) {
