@@ -59,6 +59,7 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allBooks: (root, args) => {
 
+      try {
         if(args.author && args.genre) {
             // TODO - support author
             return Book.find({
@@ -76,24 +77,43 @@ const resolvers = {
             }
         }
         return Book.find({}).populate('author');
+      } catch (err) {
+        throw new UserInputError(err.message, {
+          invalidArgs: args
+        })
+      }
+
+
     },
     allAuthors: () => Author.find({})
   },
   Mutation: {
       addBook: async (root, args) => {
-        const book = new Book({...args});        
-        const savedBook = await book.save();
-
-        return Book.populate(savedBook, {path:"author"});
+        const book = new Book({...args});
+        
+        try {
+          const savedBook = await book.save();
+          return Book.populate(savedBook, {path:"author"});
+        } catch (err) {
+          throw new UserInputError(err.message, {
+            invalidArgs: args
+          })
+        }
       },
       editAuthor: async (root, args) => {
-            return Author.findOneAndUpdate({
-              name: args.name
-            }, {
-              born: args.setBornTo
-            }, {
-              new: true
-            });
+        try {
+          return Author.findOneAndUpdate({
+            name: args.name
+          }, {
+            born: args.setBornTo
+          }, {
+            new: true
+          });
+        } catch (err) {
+          throw new UserInputError(err.message, {
+            invalidArgs: args
+          })
+        }
       }
   }
 }
