@@ -1,5 +1,18 @@
+require('dotenv').config()
 const { ApolloServer, gql } = require('apollo-server')
 const uuid = require('uuid/v1')
+const mongoose = require('mongoose');
+
+const Book = require('./models/Book');
+const Author = require('./models/Author')
+
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
 
 let authors = [
   {
@@ -97,7 +110,7 @@ type Author {
 type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: ID!
     genres: [String!]!
 }
@@ -146,30 +159,31 @@ const resolvers = {
         return newBooks;
     },
     allAuthors: () => {
-        return authors.map(author => {
-            const bookCount = books.filter(book => book.author === author.name).length;
-            return {...author, bookCount}
-        }); 
+        return Author.find({});
     }
   },
   Mutation: {
-      addBook: (root, args) => {
-        const book = {
-            ...args,
-            id: uuid()
-        }
+      addBook: async (root, args) => {
 
-        books = books.concat(book);
 
-        const bookAuthor = authors.find
-        if(!authors.find(author => author.name === args.author)) {
-            authors = authors.concat({
-                name: args.author,
-                id: uuid()
-            })
-        }
+        const book = new Book({...args});
+        
+        const savedBook = await book.save();
 
-        return book;
+
+        return Book.populate(savedBook, {path:"author"});
+
+        // books = books.concat(book);
+
+        // const bookAuthor = authors.find
+        // if(!authors.find(author => author.name === args.author)) {
+        //     authors = authors.concat({
+        //         name: args.author,
+        //         id: uuid()
+        //     })
+        // }
+
+        // return book;
 
       },
       editAuthor: (root, args) => {
