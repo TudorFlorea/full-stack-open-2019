@@ -1,10 +1,10 @@
 require('dotenv').config()
 const { ApolloServer, gql, UserInputError } = require('apollo-server')
-const uuid = require('uuid/v1')
 const mongoose = require('mongoose');
-
+const jwt = require('jsonwebtoken');
 const Book = require('./models/Book');
-const Author = require('./models/Author')
+const Author = require('./models/Author');
+const User = require('./models/User');
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
@@ -15,6 +15,16 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   })
 
 const typeDefs = gql`
+
+type User {
+  username: String!
+  favoriteGenre: String!
+  id: ID!
+}
+
+type Token {
+  value: String!
+}
 
 type Author {
     name: String!
@@ -36,6 +46,7 @@ type Query {
     authorCount: Int!
     allBooks(author: String, genre: String): [Book]
     allAuthors: [Author]!
+    me: User
 }
 
 type Mutation {
@@ -50,6 +61,16 @@ type Mutation {
         name: String!
         setBornTo: Int!
     ): Author
+
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+
+    login(
+      username: String!
+      password: String!
+    ): Token
 }
 `
 
@@ -85,10 +106,18 @@ const resolvers = {
 
 
     },
-    allAuthors: () => Author.find({})
+    allAuthors: () => Author.find({}),
+    me: (root, args, context) => {
+      return context.currentUser
+    }
   },
   Mutation: {
-      addBook: async (root, args) => {
+      addBook: async (root, args, {currentUser}) => {
+
+        if (!currentUser) {
+          throw new AuthenticationError("not authenticated")
+        }
+
         const book = new Book({...args});
         
         try {
@@ -100,7 +129,11 @@ const resolvers = {
           })
         }
       },
-      editAuthor: async (root, args) => {
+      editAuthor: async (root, args, {currentUser}) => {
+        if (!currentUser) {
+          throw new AuthenticationError("not authenticated")
+        }
+
         try {
           return Author.findOneAndUpdate({
             name: args.name
@@ -114,6 +147,30 @@ const resolvers = {
             invalidArgs: args
           })
         }
+      },
+      createUser: async (root, args) => {
+        const user = new User({...args});
+        try {
+          return user.save();
+        } catch (err) {
+          throw new UserInputError(err.message, {
+            invalidArgs: args
+          })
+        }
+      },
+      login: async (root, args) => {
+        const user = await User.findOne({username: args.username});
+
+        // hardcoded password required by exercises for simplicity
+        if(!user || args.password !== "secret") {
+          throw new UserInputError("login failed")
+        }
+        const userForToken = {
+          username: user.username,
+          id: user._id,
+        }
+        return {value: jwt.sign(userForToken, process.env.JWT_SECRET)}
+
       }
   }
 }
@@ -121,6 +178,16 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null
+    if (auth && auth.toLowerCase().startsWith('bearer ')) {
+      const decodedToken = jwt.verify(
+        auth.substring(7), process.env.JWT_SECRET
+      )
+      const currentUser = await User.findById(decodedToken.id)
+      return { currentUser }
+    }
+  }
 })
 
 server.listen().then(({ url }) => {
