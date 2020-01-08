@@ -130,15 +130,31 @@ const resolvers = {
           throw new AuthenticationError("not authenticated")
         }
 
-        const book = new Book({...args});
-        
-        try {
-          const savedBook = await book.save();
-          return Book.populate(savedBook, {path:"author"});
-        } catch (err) {
-          throw new UserInputError(err.message, {
-            invalidArgs: args
+        const existingAuthor = await Author.findOne({ name: args.author })
+
+        if(!existingAuthor) {
+          const author = new Author({ "name": args.author })
+          try {
+            await author.save()
+            const book = new Book({...args, author: author._id});
+            const savedBook = await book.save();
+            return Book.populate(savedBook, {path:"author"});
+          } catch (err) {
+            throw new UserInputError(error.message, {
+              invalidArgs: args,
           })
+          }
+        } else {
+          try {
+            const book = new Book({...args, author: existingAuthor._id});
+            const savedBook = await book.save();
+            return Book.populate(savedBook, {path:"author"});
+          } catch (err) {
+            throw new UserInputError(error.message, {
+              invalidArgs: args,
+          })
+          }
+
         }
       },
       editAuthor: async (root, args, {currentUser}) => {
