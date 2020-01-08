@@ -106,9 +106,21 @@ const resolvers = {
 
 
     },
-    allAuthors: () => Author.find({}),
+    allAuthors: () => {
+      try {
+        return  Author.find({});
+      } catch(err) {
+
+      }
+    },
     me: (root, args, context) => {
       return context.currentUser
+    }
+  },
+  Author: {
+    bookCount: (root) => {
+      console.log(root)
+      return Book.countDocuments({author: root.id})
     }
   },
   Mutation: {
