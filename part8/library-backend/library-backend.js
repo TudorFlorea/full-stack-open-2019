@@ -1,10 +1,12 @@
 require('dotenv').config()
-const { ApolloServer, gql, UserInputError } = require('apollo-server')
+const { ApolloServer, gql, UserInputError, PubSub } = require('apollo-server')
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Book = require('./models/Book');
 const Author = require('./models/Author');
 const User = require('./models/User');
+
+const pubsub = new PubSub()
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
@@ -47,6 +49,10 @@ type Query {
     allBooks(author: String, genre: String): [Book]
     allAuthors: [Author]!
     me: User
+}
+
+type Subscription {
+  bookAdded: Book!
 }
 
 type Mutation {
@@ -119,8 +125,7 @@ const resolvers = {
   },
   Author: {
     bookCount: (root) => {
-      console.log(root)
-      return Book.countDocuments({author: root.id})
+      return root.books.length
     }
   },
   Mutation: {
@@ -130,26 +135,38 @@ const resolvers = {
           throw new AuthenticationError("not authenticated")
         }
 
-        const existingAuthor = await Author.findOne({ name: args.author })
+        const isAuthor = await Author.findOne({ name: args.author })
 
-        if(!existingAuthor) {
+        if(!isAuthor) {
           const author = new Author({ "name": args.author })
           try {
-            await author.save()
+            const newAuthor = await author.save()
             const book = new Book({...args, author: author._id});
             const savedBook = await book.save();
-            return Book.populate(savedBook, {path:"author"});
-          } catch (err) {
+            const authorWithBook = new Author({...newAuthor, books: [savedBook._id]})
+            await authorWithBook.save();
+            const bookWithAuthor = await Book.populate(savedBook, {path:"author"});
+
+            pubsub.publish('BOOK_ADDED', {bookAdded: bookWithAuthor})
+            
+            return bookWithAuthor;
+          } catch (error) {
             throw new UserInputError(error.message, {
               invalidArgs: args,
           })
           }
         } else {
           try {
-            const book = new Book({...args, author: existingAuthor._id});
+            const existingAuthor = isAuthor.toJSON();
+            const book = new Book({...args, author: existingAuthor.id});
             const savedBook = await book.save();
-            return Book.populate(savedBook, {path:"author"});
-          } catch (err) {
+            await Author.findByIdAndUpdate(existingAuthor.id, {...existingAuthor, books: Array.isArray(existingAuthor.books) ? [...existingAuthor.books, savedBook._id] : [savedBook._id]})
+            const bookWithAuthor = await Book.populate(savedBook, {path:"author"});
+            
+            pubsub.publish('BOOK_ADDED', {bookAdded: bookWithAuthor})
+            
+            return bookWithAuthor;
+          } catch (error) {
             throw new UserInputError(error.message, {
               invalidArgs: args,
           })
@@ -200,6 +217,11 @@ const resolvers = {
         return {value: jwt.sign(userForToken, process.env.JWT_SECRET)}
 
       }
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
   }
 }
 
@@ -218,6 +240,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl  }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })

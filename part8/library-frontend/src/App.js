@@ -3,7 +3,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import {gql} from 'apollo-boost';
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient, useSubscription } from '@apollo/react-hooks'
 import Login from './components/Login';
 import RecommendedBooks from "./components/RecommendedBooks";
 
@@ -20,6 +20,20 @@ const ALL_AUTHORS = gql`
 const ALL_BOOKS = gql`
   {
     allBooks {
+      title
+      published
+      author {
+        name
+      }
+      id
+      genres
+    }
+  }
+`
+
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
       title
       published
       author {
@@ -92,7 +106,10 @@ const App = () => {
   const books = useQuery(ALL_BOOKS)
 
   const [addBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{query: ALL_BOOKS}, {query: ALL_AUTHORS}]
+    update: (store, response) => {
+      console.log('heresss')
+      updateCacheWith(response.data.bookAdded)
+    }
   })
 
   const [setBirthYear] = useMutation(SET_AUTHOR_BIRTH_YEAR, {
@@ -100,6 +117,33 @@ const App = () => {
   })
 
   const [login] = useMutation(LOGIN);
+
+  useSubscription(BOOK_ADDED,{
+    onSubscriptionData: ({subscriptionData }) => {
+      console.log(subscriptionData);
+      const bookAdded = subscriptionData.data.bookAdded
+      notify(`${bookAdded.title} was added!`)
+      updateCacheWith(bookAdded)
+    }
+  })
+
+  const notify = message => { alert(message) }
+
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) => 
+      set.map(p => p.id).includes(object.id)  
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      const newData = [...dataInStore.allBooks, addedBook]
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          allBooks: newData
+        }
+      })
+    }   
+  }
 
   const logout = () => {
     setToken(null)

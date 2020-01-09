@@ -3,8 +3,6 @@ import React from 'react'
 const RecommendedBooks = (props) => {
     
     const {user, show} = props;
-    console.log(props)
-
     if(!show || !user) return null
 
     const books = props.books.loading ?  [] : props.books.data.allBooks

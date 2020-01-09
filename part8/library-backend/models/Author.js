@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const schema = new mongoose.Schema({
+const AuthorSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -10,6 +10,20 @@ const schema = new mongoose.Schema({
   born: {
     type: Number,
   },
+  books: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Book'
+    }
+  ]
 })
 
-module.exports = mongoose.model('Author', schema)
+AuthorSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+    ret.id = doc._id
+    delete ret._id;
+    delete ret.__v;
+  }
+})
+
+module.exports = mongoose.model('Author', AuthorSchema)

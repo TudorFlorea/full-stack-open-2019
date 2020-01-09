@@ -15,13 +15,11 @@ const Books = (props) => {
 
   useEffect(() => {
     const genrasArray = books.reduce((acc, book) => {
-      console.log(acc, book)
       return acc.concat(book.genres)
     }, []);
     
     setGenras(Array.from(new Set(genrasArray)));
     setBooksToShow(books)
-    console.log(genras, genrasArray);
   }, [books])
 
   if (!props.show) {
@@ -35,8 +33,6 @@ const Books = (props) => {
   const clearGenraFilted = () => {
     setBooksToShow(books)
   }
-
-  console.log(props);
 
   return (
     <div>
